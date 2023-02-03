@@ -20,15 +20,15 @@ type TransStruct2 struct {
 	CreateAt time.Time `json:"create_at"`
 }
 
-func (t TransStruct) ToByte() []byte {
+func (t *TransStruct) ToByte() []byte {
 
 	b, _ := json.Marshal(t)
 
 	return b
 }
 
-// @test TestSTransStruct Slice string to Struct
-func TestSTransStruct(t *testing.T) {
+// @test TestBTransStruct Slice string to Struct
+func TestBTransStruct(t *testing.T) {
 
 	m := TransStruct{
 		Id:       1,
@@ -36,7 +36,7 @@ func TestSTransStruct(t *testing.T) {
 		CreateAt: time.Now(),
 	}
 
-	m2, _ := Trans[TransStruct2](m)
+	m2, _ := BTrans[TransStruct2](&m)
 
 	assert.Equal(t, m.Id, m2.Id)
 	assert.Equal(t, m.Name, m2.Name)
@@ -71,7 +71,7 @@ func BenchmarkAnyToStruct(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 
-		_, _ = Trans[TransStruct2](a1)
+		_, _ = BTrans[TransStruct2](&a1)
 
 	}
 
@@ -88,5 +88,4 @@ func BenchmarkCopierStruct(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		copier.Copy(b1, a1)
 	}
-
 }
