@@ -3,8 +3,6 @@ package slicex
 import (
 	"encoding/json"
 	"github.com/jinzhu/copier"
-	ji "github.com/json-iterator/go"
-
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -82,6 +80,21 @@ func TestSTransInt(t *testing.T) {
 
 }
 
+func BenchmarkSTransStruct(b *testing.B) {
+
+	m := []string{
+		(&TransStruct{Id: 1, Name: "test1", CreateAt: time.Now()}).ToString(),
+		(&TransStruct{Id: 2, Name: "test2", CreateAt: time.Now()}).ToString(),
+	}
+
+	for i := 0; i < b.N; i++ {
+
+		_, _ = STrans[TransStruct](m)
+
+	}
+
+}
+
 func BenchmarkJsonUnmarshalStruct(b *testing.B) {
 
 	m := []string{
@@ -105,6 +118,22 @@ func BenchmarkJsonUnmarshalStruct(b *testing.B) {
 
 }
 
+func BenchmarkStructToStruct(b *testing.B) {
+
+	a1, b1 := TransStruct{
+		Id:   1,
+		Name: "test1",
+	}, new(TransStruct2)
+
+	for i := 0; i < b.N; i++ {
+
+		b1.Id = a1.Id
+		b1.Name = a1.Name
+
+	}
+
+}
+
 func BenchmarkCopierStruct(b *testing.B) {
 
 	a1, b1 := TransStruct{
@@ -114,58 +143,6 @@ func BenchmarkCopierStruct(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		copier.Copy(b1, a1)
-	}
-
-}
-
-func BenchmarkSTransStruct(b *testing.B) {
-
-	m := []string{
-		(&TransStruct{Id: 1, Name: "test1", CreateAt: time.Now()}).ToString(),
-		(&TransStruct{Id: 2, Name: "test2", CreateAt: time.Now()}).ToString(),
-	}
-
-	for i := 0; i < b.N; i++ {
-
-		_, _ = STrans[TransStruct](m)
-
-	}
-
-}
-
-func BenchmarkJsonIteratorUnmarshalStruct(b *testing.B) {
-
-	m := []string{
-		(&TransStruct{Id: 1, Name: "test1", CreateAt: time.Now()}).ToString(),
-		(&TransStruct{Id: 2, Name: "test2", CreateAt: time.Now()}).ToString(),
-	}
-
-	for i := 0; i < b.N; i++ {
-
-		for _, v := range m {
-
-			var (
-				tmp TransStruct
-			)
-
-			_ = ji.Unmarshal([]byte(v), &tmp)
-
-		}
-
-	}
-
-}
-
-func BenchmarkStructToStruct(b *testing.B) {
-
-	for i := 0; i < b.N; i++ {
-		a1, b1 := TransStruct{
-			Id:   1,
-			Name: "test1",
-		}, new(TransStruct2)
-
-		b1.Id = a1.Id
-		b1.Name = a1.Name
 	}
 
 }

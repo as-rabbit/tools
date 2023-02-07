@@ -1,7 +1,7 @@
 package slicex
 
 import (
-	json "github.com/json-iterator/go"
+	"encoding/json"
 )
 
 // Slice String To Transform Any Type
