@@ -5,13 +5,13 @@ import (
 )
 
 type StructToByte interface {
-	ToByte() []byte
+	Bytes() []byte
 }
 
 // BTrans  Struct to Struct
-func BTrans[T comparable](s StructToByte) (res T, err error) {
+func BTrans[T any](s StructToByte) (res T, err error) {
 
-	if err = json.Unmarshal(s.ToByte(), &res); nil != err {
+	if err = json.Unmarshal(s.Bytes(), &res); nil != err {
 
 		return
 

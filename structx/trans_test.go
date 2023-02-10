@@ -20,7 +20,7 @@ type TransStruct2 struct {
 	CreateAt time.Time `json:"create_at"`
 }
 
-func (t *TransStruct) ToByte() []byte {
+func (t *TransStruct) Bytes() []byte {
 
 	b, _ := json.Marshal(t)
 

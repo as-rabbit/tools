@@ -6,7 +6,7 @@ import (
 
 // Slice String To Transform Any Type
 
-func STrans[T comparable](collection []string) (res []T, err error) {
+func STrans[T any](collection []string) (res []T, err error) {
 
 	res = make([]T, len(collection))
 
