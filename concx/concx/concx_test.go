@@ -9,7 +9,7 @@ import (
 
 var tasks = []int64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
-func TestConBatchTask(t *testing.T) {
+func TestTasks(t *testing.T) {
 
 	ctx := context.TODO()
 
@@ -23,7 +23,7 @@ func TestConBatchTask(t *testing.T) {
 	assert.Equal(t, nil, err)
 }
 
-func BenchmarkConBatchTask(b *testing.B) {
+func BenchmarkTasks(b *testing.B) {
 
 	ctx := context.TODO()
 

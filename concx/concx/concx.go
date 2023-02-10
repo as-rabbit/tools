@@ -3,6 +3,7 @@ package concx
 import (
 	"context"
 	"github.com/sourcegraph/conc/pool"
+	"github.com/sourcegraph/conc/stream"
 )
 
 func Tasks[T any, R any](ctx context.Context, tasks []T, f func(p T) (r R, err error), n int) (r []R, err error) {
@@ -26,7 +27,19 @@ func Tasks[T any, R any](ctx context.Context, tasks []T, f func(p T) (r R, err e
 	return
 }
 
-func Streams[T any, R any](ctx context.Context) {
+func Streams(tasks []func(), n int) {
+
+	s := stream.New().WithMaxGoroutines(n)
+	for _, task := range tasks {
+		tt := task
+		s.Go(func() stream.Callback {
+
+			return tt
+
+		})
+	}
+
+	s.Wait()
 
 	return
 }
