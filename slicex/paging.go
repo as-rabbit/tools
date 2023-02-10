@@ -6,7 +6,7 @@ import (
 )
 
 // PaginationResp Return Pagination Resp
-type PaginationResp[T constraints.Integer, D comparable] struct {
+type PaginationResp[T constraints.Integer, D any] struct {
 	IndexStart T
 	IndexEnd   T
 	PageTotal  T
@@ -14,7 +14,7 @@ type PaginationResp[T constraints.Integer, D comparable] struct {
 }
 
 // Empty Return Data
-func emptyPageResp[T constraints.Integer, D comparable]() (res *PaginationResp[T, D]) {
+func emptyPageResp[T constraints.Integer, D any]() (res *PaginationResp[T, D]) {
 	return &PaginationResp[T, D]{
 		IndexStart: 0,
 		IndexEnd:   0,
@@ -23,7 +23,7 @@ func emptyPageResp[T constraints.Integer, D comparable]() (res *PaginationResp[T
 	}
 }
 
-func overstepPageResp[T constraints.Integer, D comparable](pt T) (res *PaginationResp[T, D]) {
+func overstepPageResp[T constraints.Integer, D any](pt T) (res *PaginationResp[T, D]) {
 	return &PaginationResp[T, D]{
 		IndexStart: 0,
 		IndexEnd:   0,
@@ -33,7 +33,7 @@ func overstepPageResp[T constraints.Integer, D comparable](pt T) (res *Paginatio
 }
 
 // Top Return Slice Top
-func Top[T constraints.Integer, D comparable](top T, p []D) (res []D) {
+func Top[T constraints.Integer, D any](top T, p []D) (res []D) {
 
 	var (
 		indexStart T
@@ -62,7 +62,7 @@ func Top[T constraints.Integer, D comparable](top T, p []D) (res []D) {
 	return res
 }
 
-func Pagination[T constraints.Integer, D comparable](nowPage T, pageSize T, data []D) (res *PaginationResp[T, D]) {
+func Pagination[T constraints.Integer, D any](nowPage T, pageSize T, data []D) (res *PaginationResp[T, D]) {
 	var (
 		pageTotal  T
 		indexStart T

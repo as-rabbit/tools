@@ -1,9 +1,16 @@
 package timezone
 
+const defaultTz = "CN"
+
 // CountryTimezone Country Mapping Timezone
 func CountryTimezone(country string) string {
 
-	return countriesTz[country]
+	if tz, ok := countriesTz[country]; ok {
+
+		return tz
+	}
+
+	return countriesTz[defaultTz]
 
 }
 
