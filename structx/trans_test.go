@@ -20,11 +20,10 @@ type TransStruct2 struct {
 	CreateAt time.Time `json:"create_at"`
 }
 
-func (t *TransStruct) Bytes() []byte {
+func (t *TransStruct) Bytes() ([]byte, error) {
 
-	b, _ := json.Marshal(t)
+	return json.Marshal(t)
 
-	return b
 }
 
 // @test TestBTransStruct Slice string to Struct
