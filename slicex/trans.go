@@ -6,23 +6,20 @@ import (
 
 // Slice String To Transform Any Type
 
-func STrans[T any](collection []string) (res []T, err error) {
+func STrans[T any, R any](collection []T) (res []R, err error) {
+	var (
+		rc []byte
+	)
 
-	res = make([]T, len(collection))
+	if rc, err = json.Marshal(collection); nil != err {
 
-	for i, v := range collection {
+		return
 
-		var (
-			tmp = new(T)
-		)
+	}
 
-		if err = json.Unmarshal([]byte(v), &tmp); nil != err {
+	if err = json.Unmarshal(rc, &res); nil != err {
 
-			return []T{}, err
-
-		}
-
-		res[i] = *tmp
+		return []R{}, err
 
 	}
 

@@ -8,6 +8,8 @@ import (
 
 func TestCreateIfNotExist(t *testing.T) {
 
+	fmt.Println(os.Executable())
+
 	fmt.Println(os.ExpandEnv("$HOME/golang-server.log"))
 	//err := CreateIfNotExist("./test/test.go")
 	//fmt.Println(err)

@@ -1,4 +1,4 @@
-package concx
+package conc
 
 import (
 	"context"
@@ -21,20 +21,4 @@ func TestTasks(t *testing.T) {
 
 	assert.Equal(t, len(res), len(tasks))
 	assert.Equal(t, nil, err)
-}
-
-func BenchmarkTasks(b *testing.B) {
-
-	ctx := context.TODO()
-
-	for i := 0; i < b.N; i++ {
-
-		_, _ = Tasks[int64, int64](ctx, tasks, func(p int64) (r int64, err error) {
-
-			return p, nil
-
-		}, 10)
-
-	}
-
 }

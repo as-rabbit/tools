@@ -22,7 +22,7 @@ type TransStruct2 struct {
 	CreateAt time.Time `json:"create_at"`
 }
 
-func (t *TransStruct) ToString() string {
+func (t *TransStruct) String() string {
 
 	b, _ := json.Marshal(t)
 
@@ -31,7 +31,6 @@ func (t *TransStruct) ToString() string {
 
 // @test TestSTransStruct Slice string to Struct
 func TestSTransStruct(t *testing.T) {
-	var tests []string
 
 	m := []TransStruct{
 		{
@@ -46,13 +45,7 @@ func TestSTransStruct(t *testing.T) {
 		},
 	}
 
-	for _, v := range m {
-
-		tests = append(tests, v.ToString())
-
-	}
-
-	transData, _ := STrans[TransStruct](tests)
+	transData, _ := STrans[TransStruct, TransStruct](m)
 
 	for i, v := range transData {
 
@@ -72,7 +65,7 @@ func TestSTransInt(t *testing.T) {
 		testsInt    = []int{1, 2, 3, 4, 5}
 	)
 
-	transData, _ := STrans[int](testsString)
+	transData, _ := STrans[string, int](testsString)
 
 	for i, v := range transData {
 
@@ -85,8 +78,8 @@ func TestSTransInt(t *testing.T) {
 func BenchmarkJsonUnmarshalStruct(b *testing.B) {
 
 	m := []string{
-		(&TransStruct{Id: 1, Name: "test1", CreateAt: time.Now()}).ToString(),
-		(&TransStruct{Id: 2, Name: "test2", CreateAt: time.Now()}).ToString(),
+		(&TransStruct{Id: 1, Name: "test1", CreateAt: time.Now()}).String(),
+		(&TransStruct{Id: 2, Name: "test2", CreateAt: time.Now()}).String(),
 	}
 
 	for i := 0; i < b.N; i++ {
@@ -120,14 +113,14 @@ func BenchmarkCopierStruct(b *testing.B) {
 
 func BenchmarkSTransStruct(b *testing.B) {
 
-	m := []string{
-		(&TransStruct{Id: 1, Name: "test1", CreateAt: time.Now()}).ToString(),
-		(&TransStruct{Id: 2, Name: "test2", CreateAt: time.Now()}).ToString(),
+	m := []*TransStruct{
+		{Id: 1, Name: "test1", CreateAt: time.Now()},
+		{Id: 2, Name: "test2", CreateAt: time.Now()},
 	}
 
 	for i := 0; i < b.N; i++ {
 
-		_, _ = STrans[TransStruct](m)
+		_, _ = STrans[*TransStruct, TransStruct](m)
 
 	}
 
@@ -136,8 +129,8 @@ func BenchmarkSTransStruct(b *testing.B) {
 func BenchmarkJsonIteratorUnmarshalStruct(b *testing.B) {
 
 	m := []string{
-		(&TransStruct{Id: 1, Name: "test1", CreateAt: time.Now()}).ToString(),
-		(&TransStruct{Id: 2, Name: "test2", CreateAt: time.Now()}).ToString(),
+		(&TransStruct{Id: 1, Name: "test1", CreateAt: time.Now()}).String(),
+		(&TransStruct{Id: 2, Name: "test2", CreateAt: time.Now()}).String(),
 	}
 
 	for i := 0; i < b.N; i++ {

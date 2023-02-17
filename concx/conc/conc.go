@@ -1,4 +1,4 @@
-package concx
+package conc
 
 import (
 	"context"
