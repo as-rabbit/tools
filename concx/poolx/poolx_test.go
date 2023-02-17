@@ -122,21 +122,3 @@ func TestTasks(t *testing.T) {
 	assert.Equal(t, res, tasks)
 	assert.Equal(t, nil, err)
 }
-
-func BenchmarkTasks(b *testing.B) {
-
-	ctx := context.TODO()
-	p := pool.NewLimited(10)
-
-	defer p.Close()
-
-	for i := 0; i < b.N; i++ {
-
-		_, _ = Tasks[int64, int64, int64](ctx, p, tasks, func(ctx context.Context, req int64) (interface{}, error) {
-
-			return req, nil
-
-		})
-
-	}
-}

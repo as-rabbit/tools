@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"gopkg.in/go-playground/pool.v3"
+	"tool/errorx"
 )
 
 func work[T any](ctx context.Context, req T, f func(ctx context.Context, req T) (interface{}, error)) pool.WorkFunc {
@@ -73,11 +74,20 @@ func Steams[T any, R any](ctx context.Context, p pool.Pool, steams []T, f func(c
 
 	for i, rsp := range x {
 
-		var tr R
+		var (
+			tr R
+			e  error
+		)
 
-		if tr, err = dealResp[R](rsp); nil != err {
+		if tr, e = dealResp[R](rsp); errorx.IsFilter(e) {
 
-			return []R{}, err
+			continue
+
+		}
+
+		if nil != e {
+
+			return []R{}, e
 
 		}
 
@@ -101,11 +111,20 @@ func Tasks[PK comparable, PV any, R any](ctx context.Context, p pool.Pool, tasks
 
 	for i, rsp := range x {
 
-		var tr R
+		var (
+			tr R
+			e  error
+		)
 
-		if tr, err = dealResp[R](rsp); nil != err {
+		if tr, e = dealResp[R](rsp); errorx.IsFilter(e) {
 
-			return map[PK]R{}, err
+			continue
+
+		}
+
+		if nil != e {
+
+			return map[PK]R{}, e
 
 		}
 

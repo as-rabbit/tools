@@ -2,6 +2,7 @@ package structx
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/jinzhu/copier"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -20,15 +21,21 @@ type TransStruct2 struct {
 	CreateAt time.Time `json:"create_at"`
 }
 
-func (t *TransStruct) Bytes() []byte {
+func (t *TransStruct) Bytes() (res []byte, err error) {
 
-	b, _ := json.Marshal(t)
+	if nil != t {
 
-	return b
+		return json.Marshal(t)
+
+	}
+
+	return
+
 }
 
 // @test TestBTransStruct Slice string to Struct
-func TestBTransStruct(t *testing.T) {
+func TestBTrans(t *testing.T) {
+	var n *TransStruct
 
 	m := TransStruct{
 		Id:       1,
@@ -41,6 +48,10 @@ func TestBTransStruct(t *testing.T) {
 	assert.Equal(t, m.Id, m2.Id)
 	assert.Equal(t, m.Name, m2.Name)
 	assert.Equal(t, m.CreateAt.Equal(m2.CreateAt), true)
+
+	m3, _ := BTrans[*TransStruct2](n)
+
+	fmt.Println(m3)
 
 }
 

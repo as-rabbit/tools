@@ -4,14 +4,30 @@ import (
 	json "github.com/json-iterator/go"
 )
 
-type StructToByte interface {
-	Bytes() []byte
+type Byter interface {
+	Bytes() ([]byte, error)
 }
 
-// BTrans  Struct to Struct
-func BTrans[T any](s StructToByte) (res T, err error) {
+// BTrans  Struct Byte to Struct
+func BTrans[T any](s Byter) (res T, err error) {
 
-	if err = json.Unmarshal(s.Bytes(), &res); nil != err {
+	var (
+		rc []byte
+	)
+
+	if rc, err = s.Bytes(); nil != err {
+
+		return
+
+	}
+
+	if 0 == len(rc) {
+
+		return
+
+	}
+
+	if err = json.Unmarshal(rc, &res); nil != err {
 
 		return
 
