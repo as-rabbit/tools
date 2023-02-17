@@ -21,6 +21,12 @@ func BTrans[T any](s Byter) (res T, err error) {
 
 	}
 
+	if 0 == len(rc) {
+
+		return
+
+	}
+
 	if err = json.Unmarshal(rc, &res); nil != err {
 
 		return
